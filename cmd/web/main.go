@@ -48,13 +48,7 @@ func openDB(dsn string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	// Create tables if they don't exist.
-	script, err := os.ReadFile("./internal/statements/setup.sql")
-	if err != nil {
-		db.Close()
-		return nil, err
-	}
-	_, err = db.Exec(string(script))
+	err = db.Ping()
 	if err != nil {
 		db.Close()
 		return nil, err
