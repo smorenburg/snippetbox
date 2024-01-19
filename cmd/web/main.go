@@ -17,7 +17,7 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	dsn := flag.String("dsn", "root@tcp(localhost)/snippetbox?parseTime=true&tls=preferred&multiStatements=true", "MySQL data source name")
 	flag.Parse()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
@@ -48,7 +48,13 @@ func openDB(dsn string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	err = db.Ping()
+	// Create tables if they don't exist.
+	script, err := os.ReadFile("./internal/statements/setup.sql")
+	if err != nil {
+		db.Close()
+		return nil, err
+	}
+	_, err = db.Exec(string(script))
 	if err != nil {
 		db.Close()
 		return nil, err
