@@ -3,10 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/smorenburg/snippetbox/internal/models"
 	"html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/smorenburg/snippetbox/internal/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -22,9 +23,9 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := []string{
-		"./ui/html/base.gohtml",
-		"./ui/html/partials/nav.gohtml",
-		"./ui/html/pages/home.gohtml",
+		"./ui/html/base.gotmpl",
+		"./ui/html/partials/nav.gotmpl",
+		"./ui/html/pages/home.gotmpl",
 	}
 
 	ts, err := template.ParseFiles(files...)
@@ -61,9 +62,9 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := []string{
-		"./ui/html/base.gohtml",
-		"./ui/html/partials/nav.gohtml",
-		"./ui/html/pages/view.gohtml",
+		"./ui/html/base.gotmpl",
+		"./ui/html/partials/nav.gotmpl",
+		"./ui/html/pages/view.gotmpl",
 	}
 
 	ts, err := template.ParseFiles(files...)
